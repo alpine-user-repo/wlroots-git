@@ -1,8 +1,8 @@
 pkgname=wlroots-git
-pkgver=1
+pkgver=0
 pkgrel=0
 provides="wlroots"
-_repo="https://gitlab.freedesktop.org/wlroots/wlroots"
+_pkgname="wlroots"
 pkgdesc="Modular Wayland compositor library"
 url="https://gitlab.freedesktop.org/wlroots/wlroots"
 license="MIT"
@@ -27,16 +27,10 @@ makedepends="
 	xwayland-dev
 	"
 subpackages="$pkgname-dbg $pkgname-dev"
-source=""
-
-prepare() {
-    default_prepare
-    cd "${srcdir}"
-    git clone --depth=1 "${_repo}" || return 1
-}
+source="https://gitlab.freedesktop.org/wlroots/wlroots/-/archive/master/wlroots-master.zip"
 
 build() {
-    cd "${srcdir}/${pkgname}"
+    cd "${srcdir}/wlroots-master"
     abuild-meson \
 	-Dexamples=false \
 	. build
@@ -44,6 +38,9 @@ build() {
 }
 
 package() {
-    cd "${srcdir}/${pkgname}"
+    cd "${srcdir}/wlroots-master"
     DESTDIR="$pkgdir" meson install --no-rebuild -C build
 }
+sha512sums="
+ff3bf2d221dc7437b0051349c65f847501a7349628fb65ba32596f1598c49b8779e73dd2e57a63e51a10edbcc1c585eab99dfb3d80bee55111763dd7da0c9aa5  wlroots-master.zip
+"
